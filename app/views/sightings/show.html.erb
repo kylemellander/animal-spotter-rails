@@ -1,0 +1,34 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Species:</strong>
+  <%= @sighting.species.name %>
+</p>
+
+<p>
+  <strong>Date:</strong>
+  <%= @sighting.date %>
+</p>
+
+<p>
+  <strong>Lat:</strong>
+  <%= @sighting.lat %>
+</p>
+
+<p>
+  <strong>Lng:</strong>
+  <%= @sighting.lng %>
+</p>
+
+<p>
+  <strong>Reporter:</strong>
+  <%= @sighting.reporter %>
+</p>
+
+<p>
+  <strong>Notes:</strong>
+  <%= @sighting.notes %>
+</p>
+
+<%= link_to 'Edit', edit_sighting_path(@sighting) %> |
+<%= link_to 'Back', sightings_path %>

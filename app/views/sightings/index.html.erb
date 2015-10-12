@@ -1,0 +1,66 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Sightings</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Species</th>
+      <th>Seen</th>
+      <th>Lat</th>
+      <th>Lng</th>
+      <th>Reporter</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @sightings.each do |sighting| %>
+      <tr>
+        <td><%= sighting.species.name %></td>
+        <td><%= time_ago_in_words(sighting.date) %></td>
+        <td><%= sighting.lat %></td>
+        <td><%= sighting.lng %></td>
+        <td><%= sighting.reporter %></td>
+        <td><%= link_to 'Show', sighting %></td>
+        <td><%= link_to 'Edit', edit_sighting_path(sighting) %></td>
+        <td><%= link_to 'Destroy', sighting, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<div id="map">
+
+</div>
+
+<%= link_to 'New Sighting', new_sighting_path %>
+
+<script>
+  function initMap() {
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 8,
+      center: {lat: 45.296907, lng: -122.147296}
+    });
+    <% i = 0 %>
+    <% @sightings.each do |sighting| %>
+    var infowindow<%= i %> = new google.maps.InfoWindow({
+      content: "<h4><%= sighting.species.name %> Sighting</h4><p><%= sighting.notes %></p><p>Reported by: <%= sighting.reporter %></p>"
+    });
+    var marker<%= i %> = new google.maps.Marker({
+      position: {lat: <%= sighting.lat %>, lng: <%= sighting.lng %>},
+      map: map,
+      animation: google.maps.Animation.DROP,
+      title: "<%= sighting.species.name %> Sighting",
+      icon: {url: "<%= sighting.species.img %>", scaledSize: new google.maps.Size(24, 24)}
+    })
+    marker<%= i %>.addListener('click', function() {
+      infowindow<%= i %>.open(map, marker<%= i %>);
+    });
+    <% i = i+1 %>
+    <% end %>
+  }
+</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAmrxmh4cODT8lVmgReObQQxA3H4yDzVlY&signed_in=true&callback=initMap"></script>
